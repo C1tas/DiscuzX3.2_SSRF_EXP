@@ -19,8 +19,10 @@
 
 ## Usage
 ```
-cd DiscuzX3.2_SSRF_EXP
-git clone https://github.com/C1tas/DiscuzX3.2_init.git DockerFile/
+git clone https://github.com/C1tas/DiscuzX3.2_SSRF_EXP.git
+cd DiscuzX3.2_SSRF_EXP/DockerFile/DiscuzX3.2_init
+git submodule init
+git submodule update
 ```
 
 
