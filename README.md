@@ -17,6 +17,13 @@
     '''
 ```
 
+## Usage
+```
+cd DiscuzX3.2_SSRF_EXP
+git clone https://github.com/C1tas/DiscuzX3.2_init.git DockerFile/
+```
+
+
 ## EXP
 Exp基于pocsuit
 参考[@imp0wd3r](https://github.com/imp0wd3r)

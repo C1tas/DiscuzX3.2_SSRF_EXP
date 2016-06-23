@@ -1,0 +1,3 @@
+[submodule "DockerFile/DiscuzX3.2_init"]
+	path = DockerFile/DiscuzX3.2_init
+	url = https://github.com/C1tas/DiscuzX3.2_init.git
